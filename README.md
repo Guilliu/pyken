@@ -3,7 +3,7 @@
 
 **Pyken** is a Python package with the aim of providing the necessary tools for:
 - Grouping variables (both numerical and categorical) in an **automatic and interactive** way.
-- Development of **highly customizable scorecards** adaptable to the methodological requirements of each user.
+- Development of **highly customizable scorecards** adaptable to the requirements of each user.
 
 ## Installation
 You can install Pyken using pip
