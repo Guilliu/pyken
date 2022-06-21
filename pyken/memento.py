@@ -3,7 +3,7 @@ import numpy as np, pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import _tree, DecisionTreeClassifier
 
-from pyken.codex import *
+from carpe import *
 
 
 ####################################################################################################
@@ -125,7 +125,7 @@ class autoscorecard:
 
             try:
                 x = X_train[variable].values
-                frenken = auto_grouping(max_groups=self.autogrp_max_groups,
+                frenken = auto_grouping(name=variable, max_groups=self.autogrp_max_groups,
                 min_pct=self.autogrp_min_pct).fit(x, y_train)
                 objetos[variable] = frenken
 
@@ -142,7 +142,7 @@ class autoscorecard:
 
             variables_booleanas = []
             for variable in variables_no_agrupadas:
-                if True in X_train[variable].values:
+                if True in X_train[variable].values and False in X_train[variable].values:
                     variables_booleanas.append(variable)
 
             if len(variables_booleanas) > 0:
@@ -470,13 +470,19 @@ class autoscorecard:
 class auto_grouping:
 
 
-    def __init__(self, max_groups=5, min_pct=0.05):
+    def __init__(self, name, max_groups=5, min_pct=0.05, log_mode=False):
 
+        self.name = name
         self.max_groups = max_groups
         self.min_pct = min_pct
+        self.log_mode = log_mode
         
 
     def fit(self, x, y):
+        
+        N = 150
+        if self.log_mode: pre_text = '123: '
+        else: pre_text = ''
 
         dtype = x.dtype
         self.dtype = dtype
@@ -503,8 +509,23 @@ class auto_grouping:
         self.compute_groups(x_nm, y_nm)
 
         if dtype != 'O' and np.isnan(x).sum() > 0:
+            
             self.breakpoints_num = np.array([-12345670] + list(self.breakpoints_num))
-
+                
+            x_groups = np.digitize(self.x_final, self.breakpoints_num)
+            ngroups = len(self.breakpoints_num) + 1
+            g = np.empty(ngroups).astype(np.int64)
+            b = np.empty(ngroups).astype(np.int64)
+            for i in range(ngroups):
+                g[i] = np.sum([(y == 0) & (x_groups == i)])
+                b[i] = np.sum([(y == 1) & (x_groups == i)])
+            
+            if any(b == 0):
+                print(pre_text + 'La variable {} no se ha podido agrupar porque '
+                'en los missings no hay ni un solo malo'.format(self.name))
+                print('-' * N)
+                raise ValueError('Errorcito')
+            
         if dtype == 'O':
             self.breakpoints = breakpoints_to_str(self.breakpoints_num, categories)
         else: self.breakpoints = self.breakpoints_num
