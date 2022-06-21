@@ -30,5 +30,8 @@ pyk.pretty_scorecard(model)
 ## Examples
 In the folder `/examples` there are notebooks that explore different use cases in more detail.
 
+## Documentation
+Check out the official documentation: https://guilliu.github.io/
+
 ## Code style
 The code tries to be as minimalist as possible. The maximum characters per line is set to 100, since the 80 characters of the PEP 8 standard are considered worse for readability. For all other questions, it is recommended to follow the PEP 8 standards, with a slight preference for the use of single quotes.
