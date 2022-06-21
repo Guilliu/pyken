@@ -14,17 +14,17 @@ pip install pyken
 ## Template
 ```python
 # Import the modules
-import numpy as np, pandas as pd, pyken as yk
+import numpy as np, pandas as pd, pyken as pk
 
 # Load the data
 from sklearn.datasets import load_breast_cancer as lbc
 X, y = pd.DataFrame(lbc().data, columns=lbc().feature_names), lbc().target 
 
 # Apply autoscorecard
-model = pyk.autoscorecard().fit(X, y)
+model = pk.autoscorecard().fit(X, y)
 
-# Display the scorecard
-pyk.pretty_scorecard(model)
+# Paint the scorecard
+pk.pretty_scorecard(model)
 ```
 
 ## Examples
