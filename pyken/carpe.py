@@ -1,4 +1,4 @@
-import os, statsmodels.api as sm, datetime
+import os, statsmodels, statsmodels.api as sm, datetime
 import numpy as np, pandas as pd
 
 from scipy import special
@@ -502,17 +502,22 @@ included_vars=[], muestra_test=None, show='gini', pre_text=''):
 
                 contador = 0
                 aux = pd.DataFrame(columns=['var', 'metric'])
-
+                
+                variables_excepcion_hessian = []
                 for var in var_list:
 
                     if var not in features:
 
                         features.append(var)
-                        scorecard, features_length = compute_scorecard(
-                        data, features, info, target_name=target_name)
-                        data_final, metrica = apply_scorecard(
-                        data, scorecard, info, metrics=[metric], target_name=target_name)
-                        aux.loc[contador] = [var, metrica]
+                        try:
+                            scorecard, features_length = compute_scorecard(
+                            data, features, info, target_name=target_name)
+                            data_final, metrica = apply_scorecard(
+                            data, scorecard, info, metrics=[metric], target_name=target_name)
+                            aux.loc[contador] = [var, metrica]
+                        except statsmodels.tools.sm_exceptions.HessianInversionWarning as e:
+                            variables_excepcion_hessian.append(variable)
+                            variables_excepcion_hessian = list(set(variables_excepcion_hessian))
                         features.pop()
                         contador += 1
 
@@ -568,16 +573,21 @@ included_vars=[], muestra_test=None, show='gini', pre_text=''):
 
                 contador = 0
                 aux = pd.DataFrame(columns=['var', 'pvalue'])
-
+                
+                variables_excepcion_hessian = []
                 for var in var_list:
 
                     if var not in features:
 
                         features.append(var)
-                        scorecard, features_length, pvalues = compute_scorecard(
-                        data, features, info, target_name=target_name, pvalues=True)
-                        pvalue = pvalues[-1]
-                        aux.loc[contador] = [var, pvalue]
+                        try:
+                            scorecard, features_length, pvalues = compute_scorecard(
+                            data, features, info, target_name=target_name, pvalues=True)
+                            pvalue = pvalues[-1]
+                            aux.loc[contador] = [var, pvalue]
+                        except statsmodels.tools.sm_exceptions.HessianInversionWarning as e:
+                            variables_excepcion_hessian.append(variable)
+                            variables_excepcion_hessian = list(set(variables_excepcion_hessian))
                         features.pop()
                         contador += 1
 
