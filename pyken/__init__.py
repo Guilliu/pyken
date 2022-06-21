@@ -11,7 +11,7 @@ calcula_ks_pyspark, compute_pyspark_formula, proc_freq
 )
 
 
-__version__ = '0.1.73'
+__version__ = '0.1.78'
 
 
 __all__ = (
