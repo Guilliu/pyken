@@ -1,4 +1,4 @@
-from pyken.bojack import autoscorecard, auto_grouping
+from pyken.bojack import autoscorecard, autogrouping
 from pyken.todd import (string_categories1, string_categories2, string_to_num, num_to_string, breakpoints_to_str,
 breakpoints_to_num, remapeo_missing, data_convert, adapt_data)
 from pyken.diane import (compute_iv, compute_group_names, compute_table,
@@ -9,11 +9,11 @@ from pyken.utilities_pyspark import (f_pd_read_hdfs_file, f_read_hdfs_model,
 check_if_model_exists, compute_ks_pyspark, compute_pyspark_formula)
 
 
-__version__ = '0.2.4'
+__version__ = '0.7.2'
 
 
 __all__ = (
-    autoscorecard, auto_grouping,
+    autoscorecard, autogrouping,
     string_categories1, string_categories2, string_to_num, num_to_string, breakpoints_to_str,
     breakpoints_to_num, remapeo_missing, data_convert, adapt_data,
     compute_iv, compute_group_names, compute_table,
